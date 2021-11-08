@@ -209,7 +209,6 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 	fi
 	printf_n "${C_LGn}Done!${RES}"
 	cd
-	. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 	printf_n "
 The node was ${C_LGn}started${RES}.
 
