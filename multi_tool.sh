@@ -1,5 +1,28 @@
 #!/bin/bash
 # Default variables
+echo -e "\033[35m"
+echo -e "https://t.me/ro_cryptoo"
+echo -e "https://t.me/whitelistx1000"
+
+echo -ne "\033[35m██████╗░░█████╗░  "
+echo -e "\033[34m░█████╗░██████╗░██╗░░░██╗██████╗░████████╗░█████╗░"
+
+echo -ne "\033[35m██╔══██╗██╔══██╗  "
+echo -e "\033[34m██╔══██╗██╔══██╗╚██╗░██╔╝██╔══██╗╚══██╔══╝██╔══██╗"
+
+echo -ne "\033[35m██████╔╝██║░░██║  "
+echo -e "\033[34m██║░░╚═╝██████╔╝░╚████╔╝░██████╔╝░░░██║░░░██║░░██║"
+
+echo -ne "\033[35m██╔══██╗██║░░██║  "
+echo -e "\033[34m██║░░██╗██╔══██╗░░╚██╔╝░░██╔═══╝░░░░██║░░░██║░░██║"
+
+echo -ne "\033[35m██║░░██║╚█████╔╝  "
+echo -e "\033[34m╚█████╔╝██║░░██║░░░██║░░░██║░░░░░░░░██║░░░╚█████╔╝"
+
+echo -ne "\033[35m╚═╝░░╚═╝░╚════╝░  "
+echo -e "\033[34m░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░░░░░░░╚═╝░░░░╚════╝░"
+
+echo -e "\033[0m"
 type="install"
 source="false"
 # Options
@@ -8,7 +31,6 @@ option_value(){ echo "$1" | sed -e 's%^--[^=]*=%%g; s%^-[^=]*=%%g'; }
 while test $# -gt 0; do
 	case "$1" in
 	-h|--help)
-		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 		echo
 		echo -e "${C_LGn}Functionality${RES}: the script  installs, updates a Massa node, and opens required ports"
 		echo
