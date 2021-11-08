@@ -79,7 +79,6 @@ ports_opening() {
 }
 # Actions
 sudo apt install wget -y
-. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 cd
 if [ "$type" = "open_ports" ]; then
 	ports_opening
