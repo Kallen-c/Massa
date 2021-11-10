@@ -88,17 +88,11 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		open_ports
 		cd $HOME/massa/massa-client/
 		sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat
-		#local wallet_address="null"
-		#while [ "$wallet_address" = "null" ]; do
-		#	local wallet_address=$(./massa-client --cli true wallet_info | jq -r ".balances | keys[-1]")
-		#	continue
-		#done
-		#. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n "massa_wallet_address" -v "$wallet_address"
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/insert_variables.sh)
 		cd
 		printf_n "${C_LGn}Done!${RES}\n"
 	else
-		printf_n "${C_LR}Archive with binary downloaded unsuccessfully!${RES}\n"
+		printf_n "${C_LR}Archive with binary downloaded unsuccessfully${RES}\n"
 	fi
 	rm -rf massa.zip
 }
