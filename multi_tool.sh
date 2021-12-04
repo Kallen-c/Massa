@@ -91,6 +91,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat
 		local wallet_address="null"
 		while [ "$wallet_address" = "null" ]; do
+		  chmod u+x massa-client
 			local wallet_address=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq -r "[.[]] | .[0].address_info.address"`
 		done
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_wallet_address -v "$wallet_address"
@@ -151,7 +152,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			open_ports
 			cd $HOME/massa/massa-client/
 			if [ ! -d $HOME/massa_backup ]; then
-				./massa-client wallet_new_privkey
+				chmod u+x massa-client && ./massa-client wallet_new_privkey
 			else
 				sudo cp $HOME/massa_backup/node_privkey.key $HOME/massa/massa-node/config/node_privkey.key
 				sudo systemctl restart massad
@@ -159,6 +160,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			fi
 			local wallet_address="null"
 			while [ "$wallet_address" = "null" ]; do
+			  chmod u+x massa-client
 				local wallet_address=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq -r "[.[]] | .[0].address_info.address"`
 			done
 			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_wallet_address -v "$wallet_address"
