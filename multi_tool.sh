@@ -148,7 +148,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			open_ports
 			cd $HOME/massa/massa-client/
 			if [ ! -d $HOME/massa_backup ]; then
-				./massa-client wallet_new_privkey
+				./massa-client wallet_generate_private_key
 			else
 				sudo cp $HOME/massa_backup/node_privkey.key $HOME/massa/massa-node/config/node_privkey.key
 				sudo systemctl restart massad
@@ -226,7 +226,7 @@ ${C_LGn}Done!${RES}
 ${C_LGn}Client installation...${RES}
 "
 		cd $HOME/massa/massa-client/
-		cargo run --release wallet_new_privkey
+		cargo run --release wallet_generate_private_key
 		local wallet_address="null"
 		while [ "$wallet_address" = "null" ]; do
 			local wallet_address=`sed -n 2p <<< $(cargo run --release -j wallet_info) | jq -r "[.[]] | .[0].address_info.address"`
