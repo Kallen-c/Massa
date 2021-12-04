@@ -127,6 +127,7 @@ install() {
 		local massa_version=`wget -qO- https://api.github.com/repos/massalabs/massa/releases/latest | jq -r ".tag_name"`
 		wget -qO $HOME/massa.zip "https://github.com/massalabs/massa/releases/download/${massa_version}/release_linux.zip"
 		sleep 3
+		cd $HOME
 		if [ `wc -c < "massa.zip"` -ge 1000 ]; then
 			unzip $HOME/massa.zip -d $HOME/massa/
 			rm -rf $HOME/massa.zip
