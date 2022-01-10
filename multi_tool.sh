@@ -22,7 +22,6 @@ while test $# -gt 0; do
 		echo
 		echo -e "You can use either \"=\" or \" \" as an option and value ${C_LGn}delimiter${RES}"
 		echo
-		echo -e "${C_LGn}Useful URLs${RES}:"
 		echo
 		return 0
 		;;
@@ -55,8 +54,8 @@ EOF
 }
 update() {
 	printf_n "${C_LGn}Node updating...${RES}"
-	if [ ! -d $HOME/massa_backup ]; then
-		mkdir $HOME/massa_backup
+	if [ ! -f $HOME/massa/massa-client/wallet.dat ] || [ ! -f $HOME/massa/massa-client/node_privkey.key ]; then
+		mkdir -p $HOME/massa_backup
 		sudo cp $HOME/massa/massa-client/wallet.dat $HOME/massa_backup/wallet.dat
 		sudo cp $HOME/massa/massa-node/config/node_privkey.key $HOME/massa_backup/node_privkey.key
 	fi
@@ -87,11 +86,6 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		open_ports
 		cd $HOME/massa/massa-client/
 		sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat
-		local wallet_address="null"
-		while [ "$wallet_address" = "null" ]; do
-			local wallet_address=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq -r "[.[]] | .[0].address_info.address"`
-		done
-		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_wallet_address -v "$wallet_address"
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/insert_variables.sh)
 		cd
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
@@ -154,11 +148,6 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 				sudo systemctl restart massad
 				sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat
 			fi
-			local wallet_address="null"
-			while [ "$wallet_address" = "null" ]; do
-				local wallet_address=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq -r "[.[]] | .[0].address_info.address"`
-			done
-			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_wallet_address -v "$wallet_address"
 			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/insert_variables.sh)
 			if [ ! -d $HOME/massa_backup ]; then
 				mkdir $HOME/massa_backup
@@ -226,12 +215,7 @@ ${C_LGn}Done!${RES}
 ${C_LGn}Client installation...${RES}
 "
 		cd $HOME/massa/massa-client/
-		cargo run --release wallet_generate_private_key
-		local wallet_address="null"
-		while [ "$wallet_address" = "null" ]; do
-			local wallet_address=`sed -n 2p <<< $(cargo run --release -j wallet_info) | jq -r "[.[]] | .[0].address_info.address"`
-		done
-		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_wallet_address -v "$wallet_address"
+		cargo run --release wallet_new_privkey
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_log -v "sudo journalctl -f -n 100 -u massad" -a
 	fi
 	printf_n "${C_LGn}Done!${RES}"

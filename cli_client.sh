@@ -82,7 +82,7 @@ if [ "$language" = "RU" ]; then
 	t_ni5="Запланировано слотов:   ${C_R}0${RES} (попробуйте позже ${C_LGn}ещё раз${RES})"
 
 	t_ni6="Порты открыты:          ${C_LGn}да${RES}"
-	t_ni7="Порты открыты:          ${C_R}нет${RES} (попробуйте позже ${C_LGn}ещё раз${RES})"
+	t_ni7="Порты открыты:          ${C_R}нет${RES}"
 	t_ni8="Входящих подключений:   ${C_LGn}%d${RES}"
 	t_ni9="Исходящих подключений:  ${C_LGn}%d${RES}\n\n"
 	t_ni10="   Кошельки"
@@ -114,6 +114,7 @@ if [ "$language" = "RU" ]; then
 
 	t_done="${C_LGn}Готово!${RES}"
 	t_err="${C_R}Нет такого действия!${RES}"
+#elif [ "$language" = ".." ]; then
 else
 	t_ni1="\nNode ID:                ${C_LGn}%s${RES}"
 	t_ni2="Node version:           ${C_LGn}%s${RES}\n"
@@ -122,7 +123,7 @@ else
 	t_ni4="Draws scheduled:        ${C_LGn}%d${RES}"
 	t_ni5="Draws scheduled:        ${C_R}0${RES} (try ${C_LGn}again later${RES})"
 	t_ni6="Ports opened:           ${C_LGn}yes${RES}"
-	t_ni7="Ports opened:           ${C_R}no${RES} (try ${C_LGn}again later${RES})"
+	t_ni7="Ports opened:           ${C_R}no${RES}"
 	t_ni8="Incoming connections:   ${C_LGn}%d${RES}"
 	t_ni9="Outcoming connections:  ${C_LGn}%d${RES}\n\n"
 	t_ni10="   Wallets"
@@ -160,7 +161,7 @@ fi
 printf_n(){ printf "$1\n" "${@:2}"; }
 client() { ./massa-client; }
 node_info() {
-	local wallet_info=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq`
+	local wallet_info=`./massa-client -j wallet_info`
 	local main_address=`jq -r "[.[]] | .[0].address_info.address" <<< "$wallet_info"`
 	local node_info=`./massa-client -j get_status | jq`
 	if [ "$raw_output" = "true" ]; then
@@ -180,12 +181,13 @@ node_info() {
 			printf_n "$t_ni5"
 		fi
 		printf_n
-		local incoming_connections=`jq -r ".network_stats.in_connection_count" <<< "$node_info"`
-		if [ "$incoming_connections" -gt 0 ]; then
+		local opened_ports=`ss -tulpn | grep :3303`
+		if [ -n "$opened_ports" ]; then
 			printf_n "$t_ni6"
 		else
 			printf_n "$t_ni7"
 		fi
+		local incoming_connections=`jq -r ".network_stats.in_connection_count" <<< "$node_info"`
 		printf_n "$t_ni8" "$incoming_connections"
 		local outcoming_connections=`jq -r ".network_stats.out_connection_count" <<< "$node_info"`
 		printf_n "$t_ni9" "$outcoming_connections"
@@ -194,7 +196,7 @@ node_info() {
 	fi
 }
 wallet_info() {
-	local wallet_info=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq`
+	local wallet_info=`./massa-client -j wallet_info`
 	local main_address=`jq -r "[.[]] | .[0].address_info.address" <<< "$wallet_info"`
 	if [ "$raw_output" = "true" ]; then
 		printf_n "`jq -r "[.[]]" <<< "$wallet_info"`"
@@ -232,7 +234,7 @@ wallet_info() {
 	fi
 }
 buy_rolls() {
-	local wallet_info=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq`
+	local wallet_info=`./massa-client -j wallet_info`
 	local main_address=`jq -r "[.[]] | .[0].address_info.address" <<< "$wallet_info"`
 	local balance=`jq -r "[.[]] | .[-1].address_info.balance.candidate_ledger_info.balance" <<< "$wallet_info"`
 	local roll_count=`printf "%d" $(bc -l <<< "$balance/100") 2>/dev/null`
@@ -264,7 +266,7 @@ buy_rolls() {
 	fi
 }
 node_add_staking_private_keys() {
-	local wallet_info=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq`
+	local wallet_info=`./massa-client -j wallet_info`
 	local private_key=`jq -r "[.[]] | .[0].private_key" <<< "$wallet_info"`
 	local resp=`./massa-client node_add_staking_private_keys "$private_key"`
 	if grep -q "error" <<< "$resp"; then
@@ -274,7 +276,7 @@ node_add_staking_private_keys() {
 	fi
 }
 node_testnet_rewards_program_ownership_proof() {
-	local wallet_info=`sed -n 2p <<< $(./massa-client -j wallet_info) | jq`
+	local wallet_info=`./massa-client -j wallet_info`
 	local main_address=`jq -r "[.[]] | .[0].address_info.address" <<< "$wallet_info"`
 	local discord_id
 	printf "$t_ctrp1"
