@@ -39,6 +39,7 @@ while test $# -gt 0; do
 	esac
 done
 
+
 # Functions
 printf_n(){ printf "$1\n" "${@:2}"; }
 open_ports() {
@@ -63,7 +64,7 @@ update() {
 	wget -qO $HOME/massa.tar.gz "https://github.com/massalabs/massa/releases/download/${massa_version}/massa_${massa_version}_release_linux.tar.gz"
 	if [ `wc -c < "$HOME/massa.tar.gz"` -ge 1000 ]; then
 		rm -rf $HOME/massa/
-tar -xvf $HOME/massa.tar.gz
+		tar -xvf $HOME/massa.tar.gz
 		chmod +x $HOME/massa/massa-node/massa-node $HOME/massa/massa-client/massa-client
 		printf "[Unit]
 Description=Massa Node
@@ -104,7 +105,7 @@ ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 	else
 		printf_n "${C_LR}Archive with binary downloaded unsuccessfully!${RES}\n"
 	fi
-rm -rf $HOME/massa.tar.gz
+	rm -rf $HOME/massa.tar.gz
 }
 install() {
 	if [ -d $HOME/massa/ ]; then
@@ -112,15 +113,15 @@ install() {
 	else
 		sudo apt update
 		sudo apt upgrade -y
-sudo apt install jq curl pkg-config git build-essential libssl-dev -y
+		sudo apt install jq curl pkg-config git build-essential libssl-dev -y
 		printf_n "${C_LGn}Node installation...${RES}"
 		mkdir -p $HOME/massa/
 		cd $HOME/massa/
 		local massa_version=`wget -qO- https://api.github.com/repos/massalabs/massa/releases/latest | jq -r ".tag_name"`
 		wget -qO $HOME/massa.tar.gz "https://github.com/massalabs/massa/releases/download/${massa_version}/massa_${massa_version}_release_linux.tar.gz"
-    		if [ `wc -c < "$HOME/massa.tar.gz"` -ge 1000 ]; then
-    			tar -xvf $HOME/massa.tar.gz
-    			rm -rf $HOME/massa.tar.gz
+		if [ `wc -c < "$HOME/massa.tar.gz"` -ge 1000 ]; then
+			tar -xvf $HOME/massa.tar.gz
+			rm -rf $HOME/massa.tar.gz
 			chmod +x $HOME/massa/massa-node/massa-node $HOME/massa/massa-client/massa-client
 			printf "[Unit]
 Description=Massa Node
@@ -145,7 +146,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			else
 				sudo cp $HOME/massa_backup/node_privkey.key $HOME/massa/massa-node/config/node_privkey.key
 				sudo systemctl restart massad
-				sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat
+				sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat	
 			fi
 			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/insert_variables.sh)
 			if [ ! -d $HOME/massa_backup ]; then
