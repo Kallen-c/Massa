@@ -41,6 +41,10 @@ while test $# -gt 0; do
 		echo -e "  ${C_C}node_testnet_rewards_program_ownership_proof${RES}  after entering the Discord ID it gives you"
 		echo -e "                                                 a hash for registering in the Discord bot"
 		echo
+		echo -e "${C_LGn}Useful URLs${RES}:"
+		echo -e "https://github.com/Kallen-c/Massa/blob/main/cli_client.sh - script URL"
+		echo -e "         (you can send Pull request with new texts to add a language)"
+		echo -e "https://t.me/letskynode — node Community"
 		echo
 		return 0 2>/dev/null; exit 0
 		;;
@@ -76,18 +80,18 @@ done
 if [ "$language" = "RU" ]; then
 	t_ni1="\nID ноды:                ${C_LGn}%s${RES}"
 	t_ni2="Версия ноды:            ${C_LGn}%s${RES}\n"
-
+	
 	t_ni3="Текущий цикл:           ${C_LGn}%d${RES}"
-	t_ni4="Запланировано слотов:   ${C_LGn}%d${RES}"
-	t_ni5="Запланировано слотов:   ${C_R}0${RES} (попробуйте позже ${C_LGn}ещё раз${RES})"
-
+	#t_ni4="Запланировано слотов:   ${C_LGn}%d${RES}"
+	#t_ni5="Запланировано слотов:   ${C_R}0${RES} (попробуйте позже ${C_LGn}ещё раз${RES})"
+	
 	t_ni6="Порты открыты:          ${C_LGn}да${RES}"
 	t_ni7="Порты открыты:          ${C_R}нет${RES}"
 	t_ni8="Входящих подключений:   ${C_LGn}%d${RES}"
 	t_ni9="Исходящих подключений:  ${C_LGn}%d${RES}\n\n"
 	t_ni10="   Кошельки"
-
-
+	
+	
 	t_wi1="Адрес кошелька:  ${C_LGn}%s${RES}"
 	t_wi2=" (${C_LGn}основной${RES})"
 	t_wi3="Приватный ключ:  ${C_LGn}%s${RES} (${C_R}никому не показывать${RES})"
@@ -97,38 +101,41 @@ if [ "$language" = "RU" ]; then
 	t_wi7="Баланс:          ${C_LGn}%.2f${RES}"
 	t_wi8="ROLL'ов всего:   ${C_LGn}%d${RES}"
 	t_wi9="Активные ROLL'ы: ${C_LGn}%d${RES}"
-
-
+	
+	
 	t_br1="${C_R}Баланс менее 100 токенов${RES}"
 	t_br2="Куплено ${C_LGn}%d${RES} ROLL'ов"
 	t_br3="Введите количество ROLL'ов (максимально ${C_LGn}%d${RES}): "
 	t_br4="${C_R}Недостаточно токенов для покупки${RES}"
-
-
+	
+	
 	t_rpk="${C_R}Не удалось зарегистрировать ключ для стейкинга${RES}"
-
-
+	
+	
 	t_ctrp1="${C_LGn}Введите Discord ID:${RES} "
 	t_ctrp2="\nОтправьте Discord боту следующее:\n${C_LGn}%s${RES}\n"
-
-
+	
+	
 	t_done="${C_LGn}Готово!${RES}"
 	t_err="${C_R}Нет такого действия!${RES}"
+	t_err_nwn="\n${C_R}Нода не работает!${RES}\nПосмотреть лог: ${C_LGn}massa_log${RES}\n"
+# Send Pull request with new texts to add a language - https://github.com/Kallen-c/Massa/blob/main/cli_client.sh
 #elif [ "$language" = ".." ]; then
 else
 	t_ni1="\nNode ID:                ${C_LGn}%s${RES}"
 	t_ni2="Node version:           ${C_LGn}%s${RES}\n"
-
+	
 	t_ni3="Currnet cycle:          ${C_LGn}%d${RES}"
-	t_ni4="Draws scheduled:        ${C_LGn}%d${RES}"
-	t_ni5="Draws scheduled:        ${C_R}0${RES} (try ${C_LGn}again later${RES})"
+	#t_ni4="Draws scheduled:        ${C_LGn}%d${RES}"
+	#t_ni5="Draws scheduled:        ${C_R}0${RES} (try ${C_LGn}again later${RES})"
+	
 	t_ni6="Ports opened:           ${C_LGn}yes${RES}"
 	t_ni7="Ports opened:           ${C_R}no${RES}"
 	t_ni8="Incoming connections:   ${C_LGn}%d${RES}"
 	t_ni9="Outcoming connections:  ${C_LGn}%d${RES}\n\n"
 	t_ni10="   Wallets"
-
-
+	
+	
 	t_wi1="Wallet address:  ${C_LGn}%s${RES}"
 	t_wi2=" (${C_LGn}the main${RES})"
 	t_wi3="Private key:     ${C_LGn}%s${RES} (${C_R}don't show it to anyone${RES})"
@@ -138,23 +145,24 @@ else
 	t_wi7="Balance:         ${C_LGn}%.2f${RES}"
 	t_wi8="Total ROLLs:     ${C_LGn}%d${RES}"
 	t_wi9="Active ROLLs:    ${C_LGn}%d${RES}"
-
-
+	
+	
 	t_br1="${C_R}Balance is less than 100 tokens${RES}"
 	t_br2="${C_LGn}%d${RES} ROLLs were bought"
 	t_br3="Enter a ROLL count (max ${C_LGn}%d${RES}): "
 	t_br4="${C_R}Not enough tokens for buying${RES}"
-
-
+	
+	
 	t_rpk="${C_R}Failed to register a key for staking!${RES}"
-
-
+	
+	
 	t_ctrp1="${C_LGn}Enter a Discord ID:${RES} "
 	t_ctrp2="\nSend the following to Discord bot:\n${C_LGn}%s${RES}\n"
-
-
+	
+	
 	t_done="${C_LGn}Done!${RES}"
 	t_err="${C_R}There is no such action!${RES}"
+	t_err_nwn="\n${C_R}Node isn't working!${RES}\nView the log: ${C_LGn}massa_log${RES}\n"
 fi
 
 # Functions
@@ -171,15 +179,15 @@ node_info() {
 		printf_n "$t_ni1" "$node_id"
 		local node_version=`jq -r ".version" <<< "$node_info"`
 		printf_n "$t_ni2" "$node_version"
-
+		
 		local current_cycle=`jq -r ".current_cycle" <<< "$node_info"`
 		printf_n "$t_ni3" "$current_cycle"
-		local draws_count=`./massa-client -j get_addresses "$main_address" | jq -r ".[0].block_draws | length"`
-		if [ "$draws_count" -gt 0 ]; then
-			printf_n "$t_ni4" "$draws_count"
-		else
-			printf_n "$t_ni5"
-		fi
+		#local draws_count=`./massa-client -j get_addresses "$main_address" | jq -r ".[0].block_draws | length" 2>/dev/null`
+		#if [ -n "$draws_count" ] && [ "$draws_count" -gt 0 ]; then
+		#	printf_n "$t_ni4" "$draws_count"
+		#else
+		#	printf_n "$t_ni5"
+		#fi
 		printf_n
 		local opened_ports=`ss -tulpn | grep :3303`
 		if [ -n "$opened_ports" ]; then
@@ -301,5 +309,9 @@ other() {
 # Actions
 sudo apt install jq bc -y &>/dev/null
 cd $HOME/massa/massa-client/
-if grep -q "$action" <<< "client node_info wallet_info buy_rolls node_add_staking_private_keys node_testnet_rewards_program_ownership_proof"; then $action; else other "$@"; fi
+if grep -q "check if your node is running" <<< `./massa-client get_status`; then
+	printf_n "$t_err_nwn"
+else
+	if grep -q "$action" <<< "client node_info wallet_info buy_rolls node_add_staking_private_keys node_testnet_rewards_program_ownership_proof"; then $action; else other "$@"; fi
+fi
 cd
