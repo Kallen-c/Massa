@@ -219,6 +219,7 @@ ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
 }
 
+
 # Actions
 sudo apt install wget -y &>/dev/null
 . <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
