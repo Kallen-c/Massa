@@ -119,7 +119,7 @@ if [ "$language" = "RU" ]; then
 	t_done="${C_LGn}Готово!${RES}"
 	t_err="${C_R}Нет такого действия!${RES}"
 	t_err_nwn="\n${C_R}Нода не работает!${RES}\nПосмотреть лог: ${C_LGn}massa_log${RES}\n"
-# Send Pull request with new texts to add a language - https://github.com/Kallen-cc/Massa/blob/main/cli_client.sh
+# Send Pull request with new texts to add a language - https://github.com/Kallen-c/Massa/blob/main/cli_client.sh
 #elif [ "$language" = ".." ]; then
 else
 	t_ni1="\nNode ID:                ${C_LGn}%s${RES}"
