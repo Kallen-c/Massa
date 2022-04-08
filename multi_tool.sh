@@ -75,7 +75,6 @@ update() {
 		printf "[Unit]
 Description=Massa Node
 After=network-online.target
-
 [Service]
 User=$USER
 WorkingDirectory=$HOME/massa/massa-node
@@ -83,7 +82,6 @@ ExecStart=$HOME/massa/massa-node/massa-node
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		sudo systemctl enable massad
@@ -97,14 +95,11 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 		printf_n "
 The node was ${C_LGn}updated${RES}.
-
 \tv ${C_LGn}Useful commands${RES} v
-
 To run a client: ${C_LGn}massa_client${RES}
 To view the node status: ${C_LGn}sudo systemctl status massad${RES}
 To view the node log: ${C_LGn}massa_log${RES}
 To restart the node: ${C_LGn}sudo systemctl restart massad${RES}
-
 CLI client commands (use ${C_LGn}massa_cli_client -h${RES} to view the help page):
 ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
@@ -130,7 +125,6 @@ install() {
 			printf "[Unit]
 Description=Massa Node
 After=network-online.target
-
 [Service]
 User=$USER
 WorkingDirectory=$HOME/massa/massa-node
@@ -138,7 +132,6 @@ ExecStart=$HOME/massa/massa-node/massa-node
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			sudo systemctl enable massad
@@ -152,7 +145,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 				sudo systemctl restart massad
 				sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat	
 			fi
-			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/insert_variables.sh)
+			. <(wget -qO- https://raw.githubusercontent.com/Kallen-cD0/Massa/main/insert_variables.sh)
 			if [ ! -d $HOME/massa_backup ]; then
 				mkdir $HOME/massa_backup
 				sudo cp $HOME/massa/massa-client/wallet.dat $HOME/massa_backup/wallet.dat
@@ -163,17 +156,13 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 			printf_n "
 The node was ${C_LGn}started${RES}.
-
 Remember to save files in this directory:
 ${C_LR}$HOME/massa_backup/${RES}
-
 \tv ${C_LGn}Useful commands${RES} v
-
 To run a client: ${C_LGn}massa_client${RES}
 To view the node status: ${C_LGn}sudo systemctl status massad${RES}
 To view the node log: ${C_LGn}massa_log${RES}
 To restart the node: ${C_LGn}sudo systemctl restart massad${RES}
-
 CLI client commands (use ${C_LGn}massa_cli_client -h${RES} to view the help page):
 ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
@@ -200,7 +189,6 @@ install_source() {
 		printf "[Unit]
 Description=Massa Node
 After=network-online.target
-
 [Service]
 User=$USER
 WorkingDirectory=$HOME/massa/massa-node
@@ -208,7 +196,6 @@ ExecStart=$HOME/massa/target/release/massa-node
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
-
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		sudo systemctl enable massad
@@ -227,17 +214,13 @@ ${C_LGn}Client installation...${RES}
 	. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 	printf_n "
 The node was ${C_LGn}started${RES}.
-
 Remember to save files in this directory:
 ${C_LR}$HOME/massa_backup/${RES}
-
 \tv ${C_LGn}Useful commands${RES} v
-
 To run a client: ${C_LGn}massa_client${RES}
 To view the node status: ${C_LGn}sudo systemctl status massad${RES}
 To view the node log: ${C_LGn}massa_log${RES}
 To restart the node: ${C_LGn}sudo systemctl restart massad${RES}
-
 CLI client commands (use ${C_LGn}massa_cli_client -h${RES} to view the help page):
 ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
@@ -250,8 +233,14 @@ uninstall() {
 		sudo cp $HOME/massa/massa-node/config/node_privkey.key $HOME/massa_backup/node_privkey.key
 	fi
 	if [ -f $HOME/massa_backup/wallet.dat ] && [ -f $HOME/massa_backup/node_privkey.key ]; then
-		rm -rf $HOME/massa/ /etc/systemd/system/massad.service
+		rm -rf $HOME/massa/ /etc/systemd/system/massa.service /etc/systemd/system/massad.service
 		sudo systemctl daemon-reload
+		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_log -da
+		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_client -da
+		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_cli_client -da
+		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_node_info -da
+		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_wallet_info -da
+		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/miscellaneous/insert_variable.sh) -n massa_buy_rolls -da
 		printf_n "${C_LGn}Done!${RES}"
 	else
 		printf_n "${C_LR}No backup of the necessary files was found, delete the node manually!${RES}"
@@ -263,3 +252,8 @@ sudo apt install wget -y &>/dev/null
 . <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 cd
 $function
+© 2022 GitHub, Inc.
+Terms
+Privacy
+Security
+
