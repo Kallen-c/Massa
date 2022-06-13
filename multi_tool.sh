@@ -16,15 +16,16 @@ while test $# -gt 0; do
 		echo -e "${C_LGn}Usage${RES}: script ${C_LGn}[OPTIONS]${RES}"
 		echo
 		echo -e "${C_LGn}Options${RES}:"
-		echo -e "  -h, --help         show the help page"
+		echo -e "  -h,  --help        show the help page"
 		echo -e "  -op, --open-ports  open required ports"
-		echo -e "  -s, --source       install the node using a source code"
+		echo -e "  -s,  --source      install the node using a source code"
+		echo -e "  -rb                replace bootstraps"
+		echo -e "  -un, --uninstall   unistall the node"
 		echo
 		echo -e "You can use either \"=\" or \" \" as an option and value ${C_LGn}delimiter${RES}"
 		echo
 		echo -e "${C_LGn}Useful URLs${RES}:"
 		echo -e "https://github.com/Kallen-c/Massa/blob/main/multi_tool.sh - script URL"
-		echo -e "https://t.me/letskynode — node Community"
 		echo
 		return 0
 		;;
@@ -34,6 +35,10 @@ while test $# -gt 0; do
 		;;
 	-s|--source)
 		function="install_source"
+		shift
+		;;
+	-rb)
+		function="replace_bootstraps"
 		shift
 		;;
 	-un|--uninstall)
@@ -75,6 +80,7 @@ update() {
 		printf "[Unit]
 Description=Massa Node
 After=network-online.target
+
 [Service]
 User=$USER
 WorkingDirectory=$HOME/massa/massa-node
@@ -82,6 +88,7 @@ ExecStart=$HOME/massa/massa-node/massa-node
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
+
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		sudo systemctl enable massad
@@ -95,11 +102,14 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 		printf_n "
 The node was ${C_LGn}updated${RES}.
+
 \tv ${C_LGn}Useful commands${RES} v
+
 To run a client: ${C_LGn}massa_client${RES}
 To view the node status: ${C_LGn}sudo systemctl status massad${RES}
 To view the node log: ${C_LGn}massa_log${RES}
 To restart the node: ${C_LGn}sudo systemctl restart massad${RES}
+
 CLI client commands (use ${C_LGn}massa_cli_client -h${RES} to view the help page):
 ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
@@ -125,6 +135,7 @@ install() {
 			printf "[Unit]
 Description=Massa Node
 After=network-online.target
+
 [Service]
 User=$USER
 WorkingDirectory=$HOME/massa/massa-node
@@ -132,6 +143,7 @@ ExecStart=$HOME/massa/massa-node/massa-node
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
+
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			sudo systemctl enable massad
@@ -145,7 +157,7 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 				sudo systemctl restart massad
 				sudo cp $HOME/massa_backup/wallet.dat $HOME/massa/massa-client/wallet.dat	
 			fi
-			. <(wget -qO- https://raw.githubusercontent.com/Kallen-cD0/Massa/main/insert_variables.sh)
+			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/insert_variables.sh)
 			if [ ! -d $HOME/massa_backup ]; then
 				mkdir $HOME/massa_backup
 				sudo cp $HOME/massa/massa-client/wallet.dat $HOME/massa_backup/wallet.dat
@@ -156,13 +168,17 @@ WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 			. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 			printf_n "
 The node was ${C_LGn}started${RES}.
+
 Remember to save files in this directory:
 ${C_LR}$HOME/massa_backup/${RES}
+
 \tv ${C_LGn}Useful commands${RES} v
+
 To run a client: ${C_LGn}massa_client${RES}
 To view the node status: ${C_LGn}sudo systemctl status massad${RES}
 To view the node log: ${C_LGn}massa_log${RES}
 To restart the node: ${C_LGn}sudo systemctl restart massad${RES}
+
 CLI client commands (use ${C_LGn}massa_cli_client -h${RES} to view the help page):
 ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
@@ -189,6 +205,7 @@ install_source() {
 		printf "[Unit]
 Description=Massa Node
 After=network-online.target
+
 [Service]
 User=$USER
 WorkingDirectory=$HOME/massa/massa-node
@@ -196,6 +213,7 @@ ExecStart=$HOME/massa/target/release/massa-node
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=65535
+
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/massad.service
 		sudo systemctl enable massad
@@ -214,13 +232,17 @@ ${C_LGn}Client installation...${RES}
 	. <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 	printf_n "
 The node was ${C_LGn}started${RES}.
+
 Remember to save files in this directory:
 ${C_LR}$HOME/massa_backup/${RES}
+
 \tv ${C_LGn}Useful commands${RES} v
+
 To run a client: ${C_LGn}massa_client${RES}
 To view the node status: ${C_LGn}sudo systemctl status massad${RES}
 To view the node log: ${C_LGn}massa_log${RES}
 To restart the node: ${C_LGn}sudo systemctl restart massad${RES}
+
 CLI client commands (use ${C_LGn}massa_cli_client -h${RES} to view the help page):
 ${C_LGn}`compgen -a | grep massa_ | sed "/massa_log/d"`${RES}
 "
@@ -246,14 +268,33 @@ uninstall() {
 		printf_n "${C_LR}No backup of the necessary files was found, delete the node manually!${RES}"
 	fi	
 }
+replace_bootstraps() {
+	local config_path="$HOME/massa/massa-node/base_config/config.toml"
+	local bootstrap_list=`wget -qO- https://raw.githubusercontent.com/Kallen-c/Massa/main/bootstrap_list.txt | shuf -n50 | awk '{ print "        "$0"," }'`
+	local len=`wc -l < "$config_path"`
+	local start=`grep -n bootstrap_list "$config_path" | cut -d: -f1`
+	local end=`grep -n "\[optionnal\] port on which to listen" "$config_path" | cut -d: -f1`
+	local end=$((end-1))
+	local first_part=`sed "${start},${len}d" "$config_path"`
+	local second_part="
+    bootstrap_list = [
+${bootstrap_list}
+    ]
+"
+	local third_part=`sed "1,${end}d" "$config_path"`
+	echo "${first_part}${second_part}${third_part}" > "$config_path"
+	sed -i -e "s%retry_delay *=.*%retry_delay = 10000%; " "$config_path"
+	printf_n "${C_LGn}Done!${RES}"
+	if sudo systemctl status massad 2>&1 | grep -q running; then
+		sudo systemctl restart massad
+		printf_n "
+You can view the node bootstrapping via ${C_LGn}massa_log${RES} command
+"
+	fi	
+}
 
 # Actions
 sudo apt install wget -y &>/dev/null
 . <(wget -qO- https://raw.githubusercontent.com/Kallen-c/utils/main/logo.sh)
 cd
 $function
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-
